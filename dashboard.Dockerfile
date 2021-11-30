@@ -1,12 +1,14 @@
-FROM node AS builder
+FROM node:lts-alpine AS builder
+
+WORKDIR /usr/src/app
+
+RUN apk add --no-cache git make gcc g++ python3 libc-dev
 
 RUN npm i -g rimraf
 
 RUN \
   git config --global url."https://github.com:".insteadOf git@github.com/ && \
   git config --global url."https://".insteadOf ssh://
-
-WORKDIR /usr/src/app
 
 COPY dashboard/package* dashboard/
 COPY backend/package* backend/
@@ -18,6 +20,8 @@ RUN npm i
 WORKDIR /usr/src/app/backend
 
 RUN npm i
+
+RUN apk del git make gcc g++ python3 libc-dev
 
 WORKDIR /usr/src/app
 
