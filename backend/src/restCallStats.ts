@@ -11,10 +11,10 @@ const queryParamsRegex = /\?.*$/g;
 export function logRestCall(method: string, path: string) {
   const anonymizedPath = path.replace(looseSnowflakeRegex, "0000").replace(queryParamsRegex, "");
   const stackLines = (new Error().stack || "").split("\n").slice(10); // Remove initial fluff
-  const firstSrcLine = stackLines.findIndex(line => line.includes("/backend/src"));
+  const firstSrcLine = stackLines.findIndex((line) => line.includes("/backend/src"));
   const source = stackLines
     .slice(firstSrcLine !== -1 ? firstSrcLine : -5)
-    .filter(l => !l.includes("processTicksAndRejections"))
+    .filter((l) => !l.includes("processTicksAndRejections"))
     .join("\n");
   const key = `${method}|${anonymizedPath}|${source}`;
   if (!restCallStats.has(key)) {

@@ -54,7 +54,7 @@ export class Queue<TQueueFunction extends AnyFn = AnyFn> {
     }
 
     const fn = this.queue.shift()!;
-    new Promise(resolve => {
+    new Promise((resolve) => {
       // Either fn() completes or the timeout is reached
       void fn().then(resolve);
       setTimeout(resolve, this._timeout);

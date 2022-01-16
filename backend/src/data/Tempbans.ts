@@ -13,13 +13,7 @@ export class Tempbans extends BaseRepository {
   }
 
   getSoonExpiringTempbans(threshold: number): Promise<Tempban[]> {
-    const thresholdDateStr = moment
-      .utc()
-      .add(threshold, "ms")
-      .format(DBDateFormat);
-    return this.tempbans
-      .createQueryBuilder()
-      .where("expires_at <= :date", { date: thresholdDateStr })
-      .getMany();
+    const thresholdDateStr = moment.utc().add(threshold, "ms").format(DBDateFormat);
+    return this.tempbans.createQueryBuilder().where("expires_at <= :date", { date: thresholdDateStr }).getMany();
   }
 }

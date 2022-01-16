@@ -114,7 +114,7 @@ export const MutesPlugin = zeppelinGuildPlugin<MutesPluginType>()({
   },
 
   afterLoad(pluginData) {
-    pluginData.state.unregisterGuildEventListener = onGuildEvent(pluginData.guild.id, "expiredMute", mute =>
+    pluginData.state.unregisterGuildEventListener = onGuildEvent(pluginData.guild.id, "expiredMute", (mute) =>
       clearMute(pluginData, mute),
     );
   },

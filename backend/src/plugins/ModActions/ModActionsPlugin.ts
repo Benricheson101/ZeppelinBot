@@ -209,7 +209,7 @@ export const ModActionsPlugin = zeppelinGuildPlugin<ModActionsPluginType>()({
   },
 
   afterLoad(pluginData) {
-    pluginData.state.unregisterGuildEventListener = onGuildEvent(pluginData.guild.id, "expiredTempban", tempban =>
+    pluginData.state.unregisterGuildEventListener = onGuildEvent(pluginData.guild.id, "expiredTempban", (tempban) =>
       clearTempban(pluginData, tempban),
     );
   },

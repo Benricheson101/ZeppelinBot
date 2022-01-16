@@ -13,7 +13,7 @@ export function getMatchingRecentActions(
   const stopProfiling = startProfiling(pluginData.getKnubInstance().profiler, "automod:fns:getMatchingRecentActions");
   to = to || Date.now();
 
-  const result = pluginData.state.recentActions.filter(action => {
+  const result = pluginData.state.recentActions.filter((action) => {
     return (
       action.type === type &&
       (!identifier || action.identifier === identifier) &&

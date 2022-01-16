@@ -44,7 +44,8 @@ export const ThreadDeleteTrigger = automodTrigger<ThreadDeleteResult>()({
         threadOwner.tag,
       )}** (\`${threadOwner.id}\`) in the **#${parentName}** (\`${parentId}\`) channel has been deleted`;
     }
-    return `Thread **#${threadName ??
-      "Unknown"}** (\`${threadId}\`) from the **#${parentName}** (\`${parentId}\`) channel has been deleted`;
+    return `Thread **#${
+      threadName ?? "Unknown"
+    }** (\`${threadId}\`) from the **#${parentName}** (\`${parentId}\`) channel has been deleted`;
   },
 });

@@ -65,7 +65,7 @@ export const LocateUserPlugin = zeppelinGuildPlugin<LocateUserPluginType>()({
   },
 
   afterLoad(pluginData) {
-    pluginData.state.unregisterGuildEventListener = onGuildEvent(pluginData.guild.id, "expiredVCAlert", alert =>
+    pluginData.state.unregisterGuildEventListener = onGuildEvent(pluginData.guild.id, "expiredVCAlert", (alert) =>
       clearExpiredAlert(pluginData, alert),
     );
     fillActiveAlertsList(pluginData);

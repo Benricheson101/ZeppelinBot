@@ -36,7 +36,7 @@ export class GuildSavedMessages extends BaseGuildRepository<SavedMessage> {
     };
 
     if (msg.attachments.size) {
-      data.attachments = Array.from(msg.attachments.values()).map(att => ({
+      data.attachments = Array.from(msg.attachments.values()).map((att) => ({
         id: att.id,
         contentType: att.contentType,
         name: att.name,
@@ -49,14 +49,14 @@ export class GuildSavedMessages extends BaseGuildRepository<SavedMessage> {
     }
 
     if (msg.embeds.length) {
-      data.embeds = msg.embeds.map(embed => ({
+      data.embeds = msg.embeds.map((embed) => ({
         title: embed.title,
         description: embed.description,
         url: embed.url,
         timestamp: embed.timestamp,
         color: embed.color,
 
-        fields: embed.fields.map(field => ({
+        fields: embed.fields.map((field) => ({
           name: field.name,
           value: field.value,
           inline: field.inline,
@@ -109,7 +109,7 @@ export class GuildSavedMessages extends BaseGuildRepository<SavedMessage> {
     }
 
     if (msg.stickers?.size) {
-      data.stickers = Array.from(msg.stickers.values()).map(sticker => ({
+      data.stickers = Array.from(msg.stickers.values()).map((sticker) => ({
         format: sticker.format,
         guildId: sticker.guildId,
         id: sticker.id,
@@ -128,7 +128,7 @@ export class GuildSavedMessages extends BaseGuildRepository<SavedMessage> {
       return entity;
     }
 
-    entity.data = await decryptJson((entity.data as unknown) as string);
+    entity.data = await decryptJson(entity.data as unknown as string);
     return entity;
   }
 
@@ -199,7 +199,7 @@ export class GuildSavedMessages extends BaseGuildRepository<SavedMessage> {
   }
 
   async createFromMessages(messages: Message[], overrides = {}): Promise<void> {
-    const items = await asyncMap(messages, async msg => ({
+    const items = await asyncMap(messages, async (msg) => ({
       ...(await this.msgToInsertReadyEntity(msg)),
       ...overrides,
     }));
@@ -229,13 +229,8 @@ export class GuildSavedMessages extends BaseGuildRepository<SavedMessage> {
       }
     }
 
-    const itemsToInsert = await asyncMap(items, item => this.processEntityToDB({ ...item }));
-    await this.messages
-      .createQueryBuilder()
-      .insert()
-      .values(itemsToInsert)
-      .execute()
-      .catch(noop);
+    const itemsToInsert = await asyncMap(items, (item) => this.processEntityToDB({ ...item }));
+    await this.messages.createQueryBuilder().insert().values(itemsToInsert).execute().catch(noop);
 
     for (const item of items) {
       // perf: save a db lookup and message content decryption by building the entity manually

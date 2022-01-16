@@ -17,6 +17,7 @@ import { hasDiscordPermissions } from "../../../utils/hasDiscordPermissions";
 import { automodAction } from "../helpers";
 import { AutomodContext } from "../types";
 import { LogsPlugin } from "../../Logs/LogsPlugin";
+import { messageIsEmpty } from "../../../utils/messageIsEmpty";
 
 export const ReplyAction = automodAction({
   configType: t.union([
@@ -32,8 +33,8 @@ export const ReplyAction = automodAction({
 
   async apply({ pluginData, contexts, actionConfig, ruleName }) {
     const contextsWithTextChannels = contexts
-      .filter(c => c.message?.channel_id)
-      .filter(c => {
+      .filter((c) => c.message?.channel_id)
+      .filter((c) => {
         const channel = pluginData.guild.channels.cache.get(c.message!.channel_id as Snowflake);
         return channel instanceof TextChannel || channel instanceof ThreadChannel;
       });
@@ -48,7 +49,7 @@ export const ReplyAction = automodAction({
     }, new Map());
 
     for (const [channelId, _contexts] of contextsByChannelId.entries()) {
-      const users = unique(Array.from(new Set(_contexts.map(c => c.user).filter(Boolean)))) as User[];
+      const users = unique(Array.from(new Set(_contexts.map((c) => c.user).filter(Boolean)))) as User[];
       const user = users[0];
 
       const renderReplyText = async (str: string) =>
@@ -107,6 +108,10 @@ export const ReplyAction = automodAction({
             failIfNotExists: false,
             messageReference: _contexts[0].message!.id,
           };
+        }
+
+        if (messageIsEmpty(messageOpts)) {
+          return;
         }
 
         const replyMsg = await channel.send(messageOpts);

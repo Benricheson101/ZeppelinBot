@@ -66,7 +66,7 @@ export function initGuildsImportExportAPI(guildRouter: express.Router) {
     "/:guildId/import",
     requireGuildPermission(ApiPermissions.ManageAccess),
     rateLimit(
-      req => `import-${req.params.guildId}`,
+      (req) => `import-${req.params.guildId}`,
       5 * MINUTES,
       "A single server can only import data once every 5 minutes",
     ),
@@ -75,7 +75,10 @@ export function initGuildsImportExportAPI(guildRouter: express.Router) {
       try {
         data = importExportData.parse(req.body.data);
       } catch (err) {
-        return clientError(res, "Invalid import data format");
+        const prettyMessage = `${err.issues[0].code}: expected ${err.issues[0].expected}, received ${
+          err.issues[0].received
+        } at /${err.issues[0].path.join("/")}`;
+        return clientError(res, `Invalid import data format: ${prettyMessage}`);
         return;
       }
 
@@ -85,6 +88,14 @@ export function initGuildsImportExportAPI(guildRouter: express.Router) {
       } catch (err) {
         return clientError(res, "Invalid case handling mode");
         return;
+      }
+
+      const seenCaseNumbers = new Set();
+      for (const theCase of data.cases) {
+        if (seenCaseNumbers.has(theCase.case_number)) {
+          return clientError(res, `Duplicate case number: ${theCase.case_number}`);
+        }
+        seenCaseNumbers.add(theCase.case_number);
       }
 
       const guildCases = GuildCases.getGuildInstance(req.params.guildId);
@@ -128,7 +139,7 @@ export function initGuildsImportExportAPI(guildRouter: express.Router) {
     "/:guildId/export",
     requireGuildPermission(ApiPermissions.ManageAccess),
     rateLimit(
-      req => `export-${req.params.guildId}`,
+      (req) => `export-${req.params.guildId}`,
       5 * MINUTES,
       "A single server can only export data once every 5 minutes",
     ),
@@ -158,7 +169,7 @@ export function initGuildsImportExportAPI(guildRouter: express.Router) {
             pp_id: theCase.pp_id,
             pp_name: theCase.pp_name,
 
-            notes: theCase.notes.map(note => ({
+            notes: theCase.notes.map((note) => ({
               mod_id: note.mod_id,
               mod_name: note.mod_name,
               body: note.body,

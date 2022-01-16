@@ -13,13 +13,7 @@ export class Reminders extends BaseRepository {
   }
 
   async getRemindersDueSoon(threshold: number): Promise<Reminder[]> {
-    const thresholdDateStr = moment
-      .utc()
-      .add(threshold, "ms")
-      .format(DBDateFormat);
-    return this.reminders
-      .createQueryBuilder()
-      .andWhere("remind_at <= :date", { date: thresholdDateStr })
-      .getMany();
+    const thresholdDateStr = moment.utc().add(threshold, "ms").format(DBDateFormat);
+    return this.reminders.createQueryBuilder().andWhere("remind_at <= :date", { date: thresholdDateStr }).getMany();
   }
 }

@@ -156,7 +156,7 @@ export class GuildCases extends BaseGuildRepository {
           ...data,
           guild_id: this.guildId,
         })
-        .catch(err => {
+        .catch((err) => {
           if (err?.code === "ER_DUP_ENTRY") {
             if (data.audit_log_id) {
               // FIXME: Debug
@@ -184,7 +184,7 @@ export class GuildCases extends BaseGuildRepository {
   }
 
   async softDelete(id: number, deletedById: string, deletedByName: string, deletedByText: string) {
-    return connection.transaction(async entityManager => {
+    return connection.transaction(async (entityManager) => {
       const cases = entityManager.getRepository(Case);
       const caseNotes = entityManager.getRepository(CaseNote);
 
@@ -227,14 +227,10 @@ export class GuildCases extends BaseGuildRepository {
       .where("guild_id = :guildId", { guildId: this.guildId })
       .select(["id"])
       .getRawMany<{ id: number }>();
-    const ids = idRows.map(r => r.id);
+    const ids = idRows.map((r) => r.id);
     const batches = chunkArray(ids, 500);
     for (const batch of batches) {
-      await this.cases
-        .createQueryBuilder()
-        .where("id IN (:ids)", { ids: batch })
-        .delete()
-        .execute();
+      await this.cases.createQueryBuilder().where("id IN (:ids)", { ids: batch }).delete().execute();
     }
   }
 
@@ -244,7 +240,7 @@ export class GuildCases extends BaseGuildRepository {
       .where("guild_id = :guildId", { guildId: this.guildId })
       .update()
       .set({
-        case_number: () => `case_number + ${parseInt((amount as unknown) as string, 10)}`,
+        case_number: () => `case_number + ${parseInt(amount as unknown as string, 10)}`,
       })
       .execute();
   }

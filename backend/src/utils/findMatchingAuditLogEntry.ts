@@ -30,7 +30,7 @@ export async function findMatchingAuditLogEntry(
     const batch: Batch = {
       _waitUntil: Date.now(),
       _fetchCount: 0,
-      _promise: new Promise(async resolve => {
+      _promise: new Promise(async (resolve) => {
         await sleep(BATCH_DEBOUNCE_TIME);
 
         do {
@@ -41,7 +41,7 @@ export async function findMatchingAuditLogEntry(
           .fetchAuditLogs({
             limit: batch._fetchCount,
           })
-          .catch(err => {
+          .catch((err) => {
             // tslint:disable-next-line:no-console
             console.warn(`[DEBUG] Audit log error in ${guild.id} (${guild.name}): ${err.message}`);
             return null;
@@ -62,7 +62,7 @@ export async function findMatchingAuditLogEntry(
   }
 
   return candidates.find(
-    entry =>
+    (entry) =>
       (action == null || entry.action === action) && (targetId == null || (entry.target as any)?.id === targetId),
   );
 }

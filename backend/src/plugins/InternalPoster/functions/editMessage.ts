@@ -29,7 +29,7 @@ export async function editMessage(
         id: webhook.id,
         token: webhook.token,
       });
-      await webhookClient.editMessage(message.id, content).catch(async err => {
+      await webhookClient.editMessage(message.id, content).catch(async (err) => {
         // Unknown Webhook, remove from DB
         if (isDiscordAPIError(err) && err.code === 10015) {
           await pluginData.state.webhooks.delete(webhookClient.id);

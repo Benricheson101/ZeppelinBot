@@ -18,7 +18,7 @@ export const RestPerformanceCmd = botControlCmd({
   async run({ pluginData, message: msg, args }) {
     const count = Math.max(1, Math.min(25, args.count || 5));
     const stats = getTopRestCallStats(count);
-    const formatted = stats.map(callStats => {
+    const formatted = stats.map((callStats) => {
       const cleanSource = callStats.source.replace(leadingPathRegex, "");
       return `**${callStats.count} calls**\n${callStats.method.toUpperCase()} ${callStats.path}\n${cleanSource}`;
     });

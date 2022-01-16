@@ -175,9 +175,7 @@ export async function getPhishermanDomainInfo(domain: string): Promise<Phisherma
       await dbCache.insert({
         domain,
         data: freshData,
-        expires_at: moment()
-          .add(expiryTime, "ms")
-          .format(DBDateFormat),
+        expires_at: moment().add(expiryTime, "ms").format(DBDateFormat),
       });
     }
 
@@ -197,10 +195,7 @@ export async function phishermanApiKeyIsValid(apiKey: string): Promise<boolean> 
   }
 
   const keyCache = getKeyCacheRepository();
-  const hash = crypto
-    .createHash("sha256")
-    .update(apiKey)
-    .digest("hex");
+  const hash = crypto.createHash("sha256").update(apiKey).digest("hex");
   const entry = await keyCache.findOne({ hash });
   if (entry) {
     return entry.is_valid;
@@ -211,9 +206,7 @@ export async function phishermanApiKeyIsValid(apiKey: string): Promise<boolean> 
   await keyCache.insert({
     hash,
     is_valid: isValid,
-    expires_at: moment()
-      .add(KEY_VALIDITY_LIFETIME, "ms")
-      .format(DBDateFormat),
+    expires_at: moment().add(KEY_VALIDITY_LIFETIME, "ms").format(DBDateFormat),
   });
 
   return isValid;
@@ -247,17 +240,9 @@ export async function reportTrackedDomainsToPhisherman() {
 }
 
 export async function deleteStalePhishermanCacheEntries() {
-  await getCacheRepository()
-    .createQueryBuilder()
-    .where("expires_at <= NOW()")
-    .delete()
-    .execute();
+  await getCacheRepository().createQueryBuilder().where("expires_at <= NOW()").delete().execute();
 }
 
 export async function deleteStalePhishermanKeyCacheEntries() {
-  await getKeyCacheRepository()
-    .createQueryBuilder()
-    .where("expires_at <= NOW()")
-    .delete()
-    .execute();
+  await getKeyCacheRepository().createQueryBuilder().where("expires_at <= NOW()").delete().execute();
 }

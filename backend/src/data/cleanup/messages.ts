@@ -18,18 +18,9 @@ export async function cleanupMessages(): Promise<number> {
 
   const messagesRepository = getRepository(SavedMessage);
 
-  const deletedAtThreshold = moment
-    .utc()
-    .subtract(DELETED_MESSAGE_RETENTION_PERIOD, "ms")
-    .format(DBDateFormat);
-  const postedAtThreshold = moment
-    .utc()
-    .subtract(RETENTION_PERIOD, "ms")
-    .format(DBDateFormat);
-  const botPostedAtThreshold = moment
-    .utc()
-    .subtract(BOT_MESSAGE_RETENTION_PERIOD, "ms")
-    .format(DBDateFormat);
+  const deletedAtThreshold = moment.utc().subtract(DELETED_MESSAGE_RETENTION_PERIOD, "ms").format(DBDateFormat);
+  const postedAtThreshold = moment.utc().subtract(RETENTION_PERIOD, "ms").format(DBDateFormat);
+  const botPostedAtThreshold = moment.utc().subtract(BOT_MESSAGE_RETENTION_PERIOD, "ms").format(DBDateFormat);
 
   // SELECT + DELETE messages in batches
   // This is to avoid deadlocks that happened frequently when deleting with the same criteria as the select below
@@ -78,9 +69,9 @@ export async function cleanupMessages(): Promise<number> {
 
     ids = Array.from(
       new Set([
-        ...deletedMessageRows.map(r => r.id),
-        ...oldPostedRows.map(r => r.id),
-        ...oldBotPostedRows.map(r => r.id),
+        ...deletedMessageRows.map((r) => r.id),
+        ...oldPostedRows.map((r) => r.id),
+        ...oldBotPostedRows.map((r) => r.id),
       ]),
     );
 

@@ -61,7 +61,7 @@ export const PostPlugin = zeppelinGuildPlugin<PostPluginType>()({
   },
 
   afterLoad(pluginData) {
-    pluginData.state.unregisterGuildEventListener = onGuildEvent(pluginData.guild.id, "scheduledPost", post =>
+    pluginData.state.unregisterGuildEventListener = onGuildEvent(pluginData.guild.id, "scheduledPost", (post) =>
       postScheduledPost(pluginData, post),
     );
   },

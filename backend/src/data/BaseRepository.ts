@@ -45,7 +45,7 @@ export class BaseRepository<TEntity extends unknown = unknown> {
   }
 
   protected async processMultipleEntitiesFromDB<TArr extends TEntity[]>(entities: TArr): Promise<TArr> {
-    return asyncMap(entities, entity => this.processEntityFromDB(entity)) as Promise<TArr>;
+    return asyncMap(entities, (entity) => this.processEntityFromDB(entity)) as Promise<TArr>;
   }
 
   protected async processEntityToDB<T extends Partial<TEntity>>(entity: T): Promise<T> {

@@ -31,7 +31,7 @@ export const ProfilerDataCmd = botControlCmd({
 
     const profilerData = pluginData.getKnubInstance().profiler.getData();
     let entries = Object.entries(profilerData);
-    entries.sort(sorter(entry => entry[1][sortProp], "DESC"));
+    entries.sort(sorter((entry) => entry[1][sortProp], "DESC"));
 
     if (args.filter) {
       entries = entries.filter(([key]) => key.includes(args.filter));
@@ -44,7 +44,7 @@ export const ProfilerDataCmd = botControlCmd({
         ["Average time", `${Math.round(data.averageTime)} ms`],
         ["Samples", data.count],
       ];
-      return `${key}\n${dataLines.map(v => `  ${v[0]}: ${v[1]}`).join("\n")}`;
+      return `${key}\n${dataLines.map((v) => `  ${v[0]}: ${v[1]}`).join("\n")}`;
     });
     const formatted = `Profiler data, ${headerInfoItems.join(", ")}:\n\n${formattedEntries.join("\n\n")}`;
 

@@ -13,13 +13,7 @@ export class VCAlerts extends BaseRepository {
   }
 
   async getSoonExpiringAlerts(threshold: number): Promise<VCAlert[]> {
-    const thresholdDateStr = moment
-      .utc()
-      .add(threshold, "ms")
-      .format(DBDateFormat);
-    return this.allAlerts
-      .createQueryBuilder()
-      .andWhere("expires_at <= :date", { date: thresholdDateStr })
-      .getMany();
+    const thresholdDateStr = moment.utc().add(threshold, "ms").format(DBDateFormat);
+    return this.allAlerts.createQueryBuilder().andWhere("expires_at <= :date", { date: thresholdDateStr }).getMany();
   }
 }

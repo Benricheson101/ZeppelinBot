@@ -15,7 +15,7 @@ async function sendDirectly(
   channel: TextChannel | NewsChannel,
   content: MessageOptions,
 ): Promise<InternalPosterMessageResult | null> {
-  return channel.send(content).then(message => ({
+  return channel.send(content).then((message) => ({
     id: message.id,
     channelId: message.channelId,
   }));
@@ -43,11 +43,11 @@ export async function sendMessage(
           avatarURL: pluginData.client.user.avatarURL() || pluginData.client.user.defaultAvatarURL,
         }),
       })
-      .then(apiMessage => ({
+      .then((apiMessage) => ({
         id: apiMessage.id,
         channelId: apiMessage.channel_id,
       }))
-      .catch(async err => {
+      .catch(async (err) => {
         // Unknown Webhook
         if (isDiscordAPIError(err) && err.code === 10015) {
           await pluginData.state.webhooks.delete(webhookClient.id);

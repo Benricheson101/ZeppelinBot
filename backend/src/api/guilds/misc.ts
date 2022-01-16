@@ -132,7 +132,7 @@ export function initGuildsMiscAPI(router: express.Router) {
         }
         const validPermissions = new Set(Object.values(ApiPermissions));
         validPermissions.delete(ApiPermissions.Owner);
-        if (!Array.isArray(permissions) || permissions.some(p => !validPermissions.has(p))) {
+        if (!Array.isArray(permissions) || permissions.some((p) => !validPermissions.has(p))) {
           return clientError(res, "Invalid permissions");
         }
         if (expiresAt != null && !moment.utc(expiresAt).isValid()) {

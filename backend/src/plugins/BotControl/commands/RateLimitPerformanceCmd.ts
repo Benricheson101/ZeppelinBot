@@ -19,7 +19,7 @@ export const RateLimitPerformanceCmd = botControlCmd({
     }
 
     logItems.reverse();
-    const formatted = logItems.map(item => {
+    const formatted = logItems.map((item) => {
       const formattedTime = moment.utc(item.timestamp).format("YYYY-MM-DD HH:mm:ss.SSS");
       const items: string[] = [`[${formattedTime}]`];
       if (item.data.global) items.push("GLOBAL");

@@ -26,14 +26,14 @@ export const RolesCmd = utilityCmd({
 
     if (args.search) {
       const searchStr = args.search.toLowerCase();
-      roles = roles.filter(r => r.name.toLowerCase().includes(searchStr) || r.id === searchStr);
+      roles = roles.filter((r) => r.name.toLowerCase().includes(searchStr) || r.id === searchStr);
     }
 
     let roleCounts: Map<string, number> | null = null;
     if (args.counts) {
       await refreshMembersIfNeeded(guild);
 
-      roleCounts = new Map<string, number>(guild.roles.cache.map(r => [r.id, 0]));
+      roleCounts = new Map<string, number>(guild.roles.cache.map((r) => [r.id, 0]));
 
       for (const member of guild.members.cache.values()) {
         for (const id of member.roles.cache.keys()) {
@@ -60,7 +60,7 @@ export const RolesCmd = utilityCmd({
     } else if (sort === "memberCount" && args.counts) {
       roles.sort((first, second) => roleCounts!.get(second.id)! - roleCounts!.get(first.id)!);
     } else if (sort === "name") {
-      roles.sort(sorter(r => r.name.toLowerCase(), sortDir));
+      roles.sort(sorter((r) => r.name.toLowerCase(), sortDir));
     } else {
       sendErrorMessage(pluginData, msg.channel, "Unknown sorting method");
       return;
@@ -70,7 +70,7 @@ export const RolesCmd = utilityCmd({
 
     const chunks = chunkArray(roles, 20);
     for (const [i, chunk] of chunks.entries()) {
-      const roleLines = chunk.map(role => {
+      const roleLines = chunk.map((role) => {
         const paddedId = role.id.padEnd(longestId, " ");
         let line = `${paddedId} ${role.name}`;
         const memberCount = roleCounts?.get(role.id);

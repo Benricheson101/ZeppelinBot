@@ -105,14 +105,14 @@ export async function log<TLogType extends keyof ILogTypeData>(
         new MessageBuffer({
           timeout: batchTime,
           textSeparator: "\n",
-          consume: part => {
+          consume: (part) => {
             const parse: MessageMentionTypes[] = pluginData.config.get().allow_user_mentions ? ["users"] : [];
             internalPosterPlugin
               .sendMessage(channel, {
                 ...part,
                 allowedMentions: { parse },
               })
-              .catch(err => {
+              .catch((err) => {
                 if (isDiscordAPIError(err)) {
                   // Missing Access / Missing Permissions
                   // TODO: Show/log this somewhere

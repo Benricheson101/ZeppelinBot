@@ -43,7 +43,7 @@ export const PhishermanPlugin = zeppelinGuildPlugin<PhishermanPluginType>()({
 
     const apiKey = pluginData.config.get().api_key;
     if (apiKey) {
-      const isValid = await phishermanApiKeyIsValid(apiKey).catch(err => {
+      const isValid = await phishermanApiKeyIsValid(apiKey).catch((err) => {
         // tslint:disable-next-line:no-console
         console.warn(`[PHISHERMAN] Error checking user API key validity:\n${err.toString()}`);
         return false;

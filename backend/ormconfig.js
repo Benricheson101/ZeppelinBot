@@ -43,6 +43,8 @@ module.exports = {
 
   logging: ["error", "warn"],
 
+  logging: ["error", "warn"],
+
   // Entities
   entities: [entities],
 

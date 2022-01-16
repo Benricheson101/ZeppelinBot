@@ -53,9 +53,9 @@ export const MatchWordsTrigger = automodTrigger<MatchResultType>()({
 
     if (!regexCache.has(trigger)) {
       const looseMatchingThreshold = Math.min(Math.max(trigger.loose_matching_threshold, 1), 64);
-      const patterns = trigger.words.map(word => {
+      const patterns = trigger.words.map((word) => {
         let pattern = trigger.loose_matching
-          ? [...word].map(c => escapeStringRegexp(c)).join(`(?:\\s*|.{0,${looseMatchingThreshold})`)
+          ? [...word].map((c) => escapeStringRegexp(c)).join(`(?:\\s*|.{0,${looseMatchingThreshold})`)
           : escapeStringRegexp(word);
 
         if (trigger.only_full_words) {
@@ -65,7 +65,7 @@ export const MatchWordsTrigger = automodTrigger<MatchResultType>()({
         return pattern;
       });
 
-      const mergedRegex = new RegExp(patterns.map(p => `(?:${p})`).join("|"), trigger.case_sensitive ? "" : "i");
+      const mergedRegex = new RegExp(patterns.map((p) => `(?:${p})`).join("|"), trigger.case_sensitive ? "" : "i");
       regexCache.set(trigger, [mergedRegex]);
     }
     const regexes = regexCache.get(trigger)!;
