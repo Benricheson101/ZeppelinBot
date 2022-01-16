@@ -414,6 +414,22 @@ const baseValues = {
     if (isNaN(arg)) return 0;
     return decimals === 0 ? Math.round(arg) : arg.toFixed(decimals);
   },
+  leftShift(fst: number, snd: number) {
+    if (isNaN(fst) || isNaN(snd)) return 0;
+    return Number(BigInt(fst) << BigInt(snd));
+  },
+  rightShift(fst: number, snd: number) {
+    if (isNaN(fst) || isNaN(snd)) return 0;
+    return Number(BigInt(fst) >> BigInt(snd));
+  },
+  mod(fst: number, snd: number) {
+    if (isNaN(fst) || isNaN(snd)) return 0;
+    try {
+      return Number(BigInt(fst) % BigInt(snd));
+    } catch {
+      return 0;
+    }
+  },
   add(...args) {
     return args.reduce((result, arg) => {
       if (isNaN(arg)) return result;
