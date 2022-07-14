@@ -6,8 +6,10 @@ import {
   Guild,
   GuildAuditLogs,
   GuildAuditLogsEntry,
+  GuildBasedChannel,
   GuildChannel,
   GuildMember,
+  GuildTextBasedChannel,
   Invite,
   InviteGuild,
   LimitedCollection,
@@ -327,7 +329,7 @@ export const zEmbedInput = z.object({
   title: z.string().optional(),
   description: z.string().optional(),
   url: z.string().optional(),
-  timestamp: z.number().optional(),
+  timestamp: z.string().optional(),
   color: z.number().optional(),
 
   footer: z.optional(
@@ -876,7 +878,7 @@ export function chunkArray<T>(arr: T[], chunkSize): T[][] {
 
   for (let i = 0; i < arr.length; i++) {
     currentChunk.push(arr[i]);
-    if ((i !== 0 && i % chunkSize === 0) || i === arr.length - 1) {
+    if ((i !== 0 && (i + 1) % chunkSize === 0) || i === arr.length - 1) {
       chunks.push(currentChunk);
       currentChunk = [];
     }
@@ -1085,7 +1087,7 @@ export type CustomEmoji = {
   id: string;
 } & Emoji;
 
-export type UserNotificationMethod = { type: "dm" } | { type: "channel"; channel: TextChannel | ThreadChannel };
+export type UserNotificationMethod = { type: "dm" } | { type: "channel"; channel: GuildTextBasedChannel };
 
 export const disableUserNotificationStrings = ["no", "none", "off"];
 
