@@ -1,6 +1,9 @@
 #!/bin/bash
 
-git fetch origin
-git reset --hard origin/bens-stuff
-docker-compose up --force-recreate --build -d
-docker image prune -f
+echo Updating Zeppelin...
+
+docker compose -f docker-compose.production.yml stop
+git pull
+docker compose -f docker-compose.production.yml start
+
+echo Update finished!
