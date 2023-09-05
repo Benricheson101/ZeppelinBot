@@ -163,4 +163,18 @@ export const TemplateFunctions: TemplateFunction[] = [
     arguments: ["argument1", "argument2", "..."],
     examples: ['choose("Hello", "World", "!")'],
   },
+  {
+    name: "urlEncode",
+    description: "URL encodes a string",
+    returnValue: "string",
+    arguments: ["string"],
+    examples: ['urlEncode("Hello world")'],
+  },
+  {
+    name: "urlDecode",
+    description: "Decodes a URL encoded string",
+    returnValue: "string",
+    arguments: ["string"],
+    examples: ['urlDecode("Hello%20world")'],
+  },
 ];

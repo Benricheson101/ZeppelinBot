@@ -458,6 +458,12 @@ const baseValues = {
     const mod = Math.floor(Math.random() * cases.length) + 1;
     return baseValues.cases(mod, ...cases);
   },
+  urlEncode(str) {
+    return encodeURIComponent(str);
+  },
+  urlDecode(str) {
+    return decodeURIComponent(str);
+  },
 };
 
 export async function renderTemplate(
