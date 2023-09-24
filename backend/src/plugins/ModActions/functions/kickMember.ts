@@ -39,6 +39,7 @@ export async function kickMember(
             moderator: kickOptions.caseArgs?.modId
               ? userToTemplateSafeUser(await resolveUser(pluginData.client, kickOptions.caseArgs.modId))
               : null,
+            target: userToTemplateSafeUser(member.user),
           }),
         );
 

@@ -55,6 +55,7 @@ export class TemplateSafeUser extends TemplateSafeValueContainer {
   bot?: boolean;
   createdAt?: number;
   renderedUsername: string;
+  displayName: string;
 
   constructor(data: InputProps<TemplateSafeUser>) {
     super();
@@ -245,13 +246,16 @@ export function userToTemplateSafeUser(user: User | UnknownUser): TemplateSafeUs
   if (user instanceof UnknownUser) {
     return new TemplateSafeUser({
       id: user.id,
-      username: "Unknown",
-      discriminator: "0000",
+      username: "unknown",
+      discriminator: "0",
       mention: `<@${user.id}>`,
-      tag: "Unknown#0000",
+      tag: "Unknown",
       renderedUsername: renderUserUsername(user),
+      displayName: "Unknown",
     });
   }
+
+  console.log(user.valueOf(), user);
 
   return new TemplateSafeUser({
     id: user.id,
@@ -263,6 +267,7 @@ export function userToTemplateSafeUser(user: User | UnknownUser): TemplateSafeUs
     bot: user.bot,
     createdAt: user.createdTimestamp,
     renderedUsername: renderUserUsername(user),
+    displayName: user.displayName,
   });
 }
 

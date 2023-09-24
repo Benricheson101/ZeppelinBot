@@ -3,7 +3,7 @@ import { GuildPluginData } from "knub";
 import { CaseTypes } from "../../../data/CaseTypes";
 import { TemplateSafeValueContainer, renderTemplate } from "../../../templateFormatter";
 import { UserNotificationResult, createUserNotificationError, notifyUser, resolveUser, ucfirst } from "../../../utils";
-import { userToTemplateSafeUser } from "../../../utils/templateSafeObjects";
+import { memberToTemplateSafeMember, userToTemplateSafeUser } from "../../../utils/templateSafeObjects";
 import { waitForButtonConfirm } from "../../../utils/waitForInteraction";
 import { CasesPlugin } from "../../Cases/CasesPlugin";
 import { LogsPlugin } from "../../Logs/LogsPlugin";
@@ -28,6 +28,7 @@ export async function warnMember(
         moderator: warnOptions.caseArgs?.modId
           ? userToTemplateSafeUser(await resolveUser(pluginData.client, warnOptions.caseArgs.modId))
           : null,
+        target: memberToTemplateSafeMember(member),
       }),
     );
     const contactMethods = warnOptions?.contactMethods

@@ -464,6 +464,9 @@ const baseValues = {
   urlDecode(str) {
     return decodeURIComponent(str);
   },
+  now() {
+    return Date.now();
+  },
 };
 
 export async function renderTemplate(

@@ -60,6 +60,7 @@ export async function banUserId(
             moderator: banOptions.caseArgs?.modId
               ? userToTemplateSafeUser(await resolveUser(pluginData.client, banOptions.caseArgs.modId))
               : null,
+            target: userToTemplateSafeUser(user),
           }),
         );
 
@@ -74,6 +75,7 @@ export async function banUserId(
               ? userToTemplateSafeUser(await resolveUser(pluginData.client, banOptions.caseArgs.modId))
               : null,
             banTime: humanizeDuration(banTime),
+            target: userToTemplateSafeUser(user),
           }),
         );
 

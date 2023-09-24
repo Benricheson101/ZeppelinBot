@@ -19,7 +19,7 @@ import {
   ucfirst,
 } from "../../../utils";
 import { muteLock } from "../../../utils/lockNameHelpers";
-import { userToTemplateSafeUser } from "../../../utils/templateSafeObjects";
+import { memberToTemplateSafeMember, userToTemplateSafeUser } from "../../../utils/templateSafeObjects";
 import { CasesPlugin } from "../../Cases/CasesPlugin";
 import { RoleManagerPlugin } from "../../RoleManager/RoleManagerPlugin";
 import { MuteOptions, MutesPluginType } from "../types";
@@ -180,6 +180,7 @@ export async function muteUser(
         moderator: muteOptions.caseArgs?.modId
           ? userToTemplateSafeUser(await resolveUser(pluginData.client, muteOptions.caseArgs.modId))
           : null,
+        target: member && memberToTemplateSafeMember(member),
       }),
     ));
 
