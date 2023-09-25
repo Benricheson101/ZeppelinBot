@@ -1,4 +1,11 @@
-import { MessageCreateOptions, NewsChannel, RESTJSONErrorCodes, Snowflake, TextChannel } from "discord.js";
+import {
+  MessageCreateOptions,
+  NewsChannel,
+  RESTJSONErrorCodes,
+  Snowflake,
+  TextChannel,
+  ThreadChannel,
+} from "discord.js";
 import { GuildPluginData } from "knub";
 import { Case } from "../../../data/entities/Case";
 import { isDiscordAPIError } from "../../../utils";
@@ -19,7 +26,15 @@ export async function postToCaseLogChannel(
 
   const caseLogChannel = pluginData.guild.channels.cache.get(caseLogChannelId as Snowflake);
   // This doesn't use `!isText() || isThread()` because TypeScript had some issues inferring types from it
-  if (!caseLogChannel || !(caseLogChannel instanceof TextChannel || caseLogChannel instanceof NewsChannel)) return null;
+  if (
+    !caseLogChannel ||
+    !(
+      caseLogChannel instanceof TextChannel ||
+      caseLogChannel instanceof NewsChannel ||
+      caseLogChannel instanceof ThreadChannel
+    )
+  )
+    return null;
 
   let result: InternalPosterMessageResult | null = null;
   try {
