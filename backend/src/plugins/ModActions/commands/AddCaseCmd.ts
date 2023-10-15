@@ -7,6 +7,7 @@ import { renderUserUsername, resolveMember, resolveUser } from "../../../utils";
 import { LogsPlugin } from "../../Logs/LogsPlugin";
 import { formatReasonWithAttachments } from "../functions/formatReasonWithAttachments";
 import { modActionsCmd } from "../types";
+import { parseReason } from "../functions/parseReason";
 
 const opts = {
   mod: ct.member({ option: true }),
@@ -58,8 +59,8 @@ export const AddCaseCmd = modActionsCmd({
       sendErrorMessage(pluginData, msg.channel, "Cannot add case: invalid case type");
       return;
     }
-
-    const reason = formatReasonWithAttachments(args.reason, [...msg.attachments.values()]);
+    const config = pluginData.config.get();
+    const reason = formatReasonWithAttachments(parseReason(config, args.reason), [...msg.attachments.values()]);
 
     // Create the case
     const casesPlugin = pluginData.getPlugin(CasesPlugin);

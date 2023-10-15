@@ -10,6 +10,7 @@ import { formatReasonWithAttachments } from "../functions/formatReasonWithAttach
 import { ignoreEvent } from "../functions/ignoreEvent";
 import { isBanned } from "../functions/isBanned";
 import { IgnoredEventType, modActionsCmd } from "../types";
+import { parseReason } from "../functions/parseReason";
 
 export const MassunbanCmd = modActionsCmd({
   trigger: "massunban",
@@ -36,8 +37,10 @@ export const MassunbanCmd = modActionsCmd({
       sendErrorMessage(pluginData, msg.channel, "Cancelled");
       return;
     }
-
-    const unbanReason = formatReasonWithAttachments(unbanReasonReply.content, [...msg.attachments.values()]);
+    const config = pluginData.config.get();
+    const unbanReason = formatReasonWithAttachments(parseReason(config, unbanReasonReply.content), [
+      ...msg.attachments.values(),
+    ]);
 
     // Ignore automatic unban cases and logs for these users
     // We'll create our own cases below and post a single "mass unbanned" log instead
