@@ -5,13 +5,16 @@ import { sendErrorMessage, sendSuccessMessage } from "../../../pluginUtils";
 import { CasesPlugin } from "../../../plugins/Cases/CasesPlugin";
 import { LogsPlugin } from "../../Logs/LogsPlugin";
 import { formatReasonWithAttachments } from "./formatReasonWithAttachments";
+import { parseReason } from "./parseReason.js";
+import { GuildPluginData } from "knub";
+import { ModActionsPluginType } from "../types.js";
 
-export async function updateCase(pluginData, msg: Message, args) {
+export async function updateCase(pluginData: GuildPluginData<ModActionsPluginType>, msg: Message, args) {
   let theCase: Case | undefined;
   if (args.caseNumber != null) {
-    theCase = await pluginData.state.cases.findByCaseNumber(args.caseNumber);
+    theCase = (await pluginData.state.cases.findByCaseNumber(args.caseNumber)) || undefined;
   } else {
-    theCase = await pluginData.state.cases.findLatestByModId(msg.author.id);
+    theCase = (await pluginData.state.cases.findLatestByModId(msg.author.id)) || undefined;
   }
 
   if (!theCase) {
@@ -23,6 +26,8 @@ export async function updateCase(pluginData, msg: Message, args) {
     sendErrorMessage(pluginData, msg.channel, "Text or attachment required");
     return;
   }
+  const config = pluginData.config.get();
+  args.note &&= parseReason(config, args.note);
 
   const note = formatReasonWithAttachments(args.note, [...msg.attachments.values()]);
 

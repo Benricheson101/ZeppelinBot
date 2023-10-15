@@ -10,6 +10,7 @@ import { LogsPlugin } from "../../Logs/LogsPlugin";
 import { formatReasonWithAttachments } from "../functions/formatReasonWithAttachments";
 import { ignoreEvent } from "../functions/ignoreEvent";
 import { IgnoredEventType, modActionsCmd } from "../types";
+import { parseReason } from "../functions/parseReason";
 
 const opts = {
   mod: ct.member({ option: true }),
@@ -48,7 +49,8 @@ export const UnbanCmd = modActionsCmd({
     }
 
     pluginData.state.serverLogs.ignoreLog(LogType.MEMBER_UNBAN, user.id);
-    const reason = formatReasonWithAttachments(args.reason, [...msg.attachments.values()]);
+    const config = pluginData.config.get();
+    const reason = formatReasonWithAttachments(parseReason(config, args.reason), [...msg.attachments.values()]);
 
     try {
       ignoreEvent(pluginData, IgnoredEventType.Unban, user.id);
