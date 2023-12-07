@@ -31,8 +31,6 @@ services:
       MYSQL_DATABASE: zeppelin
       MYSQL_USER: zeppelin
       MYSQL_PASSWORD: ${DOCKER_PROD_MYSQL_PASSWORD?:Missing DOCKER_PROD_MYSQL_PASSWORD}
-    ports:
-      - ${DOCKER_PROD_MYSQL_PORT:?Missing DOCKER_PROD_MYSQL_PORT}:3306
     volumes:
       - ./docker/production/data/mysql:/var/lib/mysql
     command: --authentication-policy=mysql_native_password
