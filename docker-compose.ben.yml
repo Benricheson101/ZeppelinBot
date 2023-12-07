@@ -62,6 +62,22 @@ services:
     environment:
       DEBUG: ${DEBUG-}
     command: ["npm", "run", "start-api-prod"]
+    networks:
+      - default
+      - traefik-public
+    labels:
+      traefik.enable: true
+
+      traefik.http.middlewares.zeppelin-strip-api-prefix.stripprefix.prefixes: '/api'
+
+      traefik.http.routers.zeppelin-api.rule: Host(`${DOCKER_PROD_DOMAIN}`) && PathPrefix(`/api`)
+      traefik.http.routers.zeppelin-api.entrypoints: ${DOCKER_PROD_TRAEFIK_ENTRYPOINTS}
+      traefik.http.routers.zeppelin-api.tls: ${DOCKER_PROD_TRAEFIK_TLS}
+      traefik.http.routers.zeppelin-api.tls.certresolver: ${DOCKER_PROD_TRAEFIK_TLS_CERTRESOLVER}
+      traefik.http.routers.zeppelin-api.service: zeppelin-api
+      traefik.http.routers.zeppelin-api.middlewares: zeppelin-strip-api-prefix@docker
+
+      traefik.http.services.zeppelin-api.loadbalancer.server.port: ${API_PORT:?Missing API_PORT}
 
   bot:
     depends_on:
