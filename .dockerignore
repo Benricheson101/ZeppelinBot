@@ -6,6 +6,9 @@
 /docker/development/data
 /docker/production/data
 
-node_modules
+/node_modules
+/backend/node_modules
+/dashboard/node_modules
+
 /backend/dist
 /dashboard/dist

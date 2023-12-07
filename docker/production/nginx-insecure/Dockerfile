@@ -1,12 +1,24 @@
 FROM node:18 AS builder
 USER node
 
-COPY --chown=node:node . /zeppelin
+# COPY --chown=node:node . /zeppelin
 
+WORKDIR /zeppelin
+
+COPY --chown=node:node \
+  ./package.json \
+  ./package-lock.json \
+  ./shared/package.json \
+  ./shared/package-lock.json \
+  ./dashboard/package.json \
+  ./dashboard/package-lock.json \
+  ./
+
+RUN npm ci
+
+COPY --chown=node:node . .
 WORKDIR /zeppelin/dashboard
-RUN ls -lah
-RUN pwd
-RUN npm ci && npm run build
+RUN npm run build
 
 FROM nginx
 
